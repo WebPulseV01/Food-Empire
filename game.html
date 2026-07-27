@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Food Empire 🌍</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial;
+      background: linear-gradient(to bottom, #1a1a2e, #16213e);
+      color: white;
+      text-align: center;
+    }
+
+    h1 {
+      background: #0f3460;
+      padding: 15px;
+      margin: 0;
+    }
+
+    .container {
+      padding: 20px;
+    }
+
+    select, input {
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      margin: 10px;
+    }
+
+    button {
+      background: linear-gradient(45deg, #e94560, #ff2e63);
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .video-box {
+      margin: 20px auto;
+      width: 300px;
+      background: #0f3460;
+      padding: 10px;
+      border-radius: 15px;
+    }
+
+    .result {
+      font-size: 20px;
+      margin-top: 15px;
+    }
+
+    .badge {
+      background: gold;
+      color: black;
+      padding: 8px;
+      border-radius: 8px;
+      display: inline-block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>🌍 Food Empire</h1>
+
+<div class="container">
+
+  <h2>Choose a Country to Conquer</h2>
+
+  <select id="country">
+    <option value="france">France 🇫🇷</option>
+    <option value="japan">Japan 🇯🇵</option>
+    <option value="usa">USA 🇺🇸</option>
+  </select>
+
+  <br>
+
+  <button onclick="generateChallenge()">🎥 Watch FoodTok</button>
+
+  <div id="videoContainer" class="video-box" style="display:none;">
+    <div id="player"></div>
+    <p id="hint"></p>
+  </div>
+
+  <div>
+    <input id="answer" placeholder="Type the food name...">
+    <br>
+    <button onclick="checkAnswer()">Submit Answer</button>
+  </div>
+
+  <div class="result" id="result"></div>
+
+</div>
+
+<script>
+  let currentAnswer = "";
+  let currentType = "";
+
+  const foodData = {
+    france: [
+      {
+        type: "youtube",
+        video: "https://www.youtube-nocookie.com/embed/U7bOfqWitqs",
+        answer: "croissant",
+        hint: "🥐 A buttery bakery pastry from Paris"
+      }
+    ],
+    japan: [
+      {
+        type: "youtube",
+        video: "https://www.youtube-nocookie.com/embed/ysz5S6PUM-U",
+        answer: "sushi",
+        hint: "🍣 Rice + fish dish"
+      }
+    ],
+    usa: [
+      {
+        type: "youtube",
+        video: "https://www.youtube-nocookie.com/embed/eQr1p_Pl3go",
+        answer: "burger",
+        hint: "🍔 Classic fast food"
+      }
+    ]
+  };
+
+  function generateChallenge() {
+    let country = document.getElementById("country").value;
+    let options = foodData[country];
+    let random = options[Math.floor(Math.random() * options.length)];
+
+    currentAnswer = random.answer;
+    currentType = random.type;
+
+    let player = document.getElementById("player");
+
+    if (currentType === "youtube") {
+      player.innerHTML = `<iframe width="300" height="200" src="${random.video}" frameborder="0" allow="accelerometer; autoplay; encrypted-media;" allowfullscreen></iframe>`;
+    } 
+    else if (currentType === "tiktok") {
+      player.innerHTML = `<iframe width="300" height="500" src="${random.video}" frameborder="0" allowfullscreen></iframe>`;
+    } 
+    else {
+      player.innerHTML = `<video width="300" controls><source src="${random.video}" type="video/mp4"></video>`;
+    }
+
+    document.getElementById("hint").textContent = random.hint;
+    document.getElementById("videoContainer").style.display = "block";
+    document.getElementById("result").textContent = "";
+  }
+
+  function checkAnswer() {
+    let userAnswer = document.getElementById("answer").value.toLowerCase();
+
+    if (userAnswer === currentAnswer) {
+      document.getElementById("result").innerHTML =
+        "🎉 Correct! You conquered this country!<br><div class='badge'>🏆 Food Master</div>";
+    } else {
+      document.getElementById("result").textContent = "❌ Wrong! Try again.";
+    }
+  }
+</script>
+
+</body>
+</html>
+
